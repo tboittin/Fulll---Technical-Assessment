@@ -12,7 +12,8 @@
   "type": "commonjs",
   "main": "fizzbuzz.ts",
   "scripts": {
-    "test": "jest"
+    "start": "npx ts-node fizzbuzz.ts",
+    "test": "jest --watchAll"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
