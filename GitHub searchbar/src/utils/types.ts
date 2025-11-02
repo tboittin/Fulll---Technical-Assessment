@@ -11,3 +11,7 @@ export interface GithubSearchResponse {
     incomplete_results: boolean;
     items: GithubUser[];
 }
+
+export interface UserCardData extends GithubUser {
+    appId: string;
+}
