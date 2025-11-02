@@ -4,6 +4,10 @@ import { renderHook, waitFor } from "@testing-library/react";
 
 import type { GithubSearchResponse, GithubUser, UserCardData } from "../utils/types";
 
+vi.mock('./useDebounce', () => ({
+    useDebounce: (value: string) => value,
+}));
+
 const mockUser: GithubUser = {
     id: 1,
     login: "testLogin",
