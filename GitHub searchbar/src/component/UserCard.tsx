@@ -25,22 +25,21 @@ export const UserCard = ({ user, isSelected, onSelect }: UserCardProps) => {
                 aria-label={`Sélectionner l'utilisateur ${user.login}`}
             />
 
+            <img
+                src={user.avatar_url}
+                alt={`Avatar de ${user.login}`}
+                className={styles.avatar}
+            />
+            <p className={styles.id}>{user.id}</p>
+            <p className={styles.login}>{user.login}</p>
             <a
                 href={user.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.linkContainer}
             >
-                <img
-                    src={user.avatar_url}
-                    alt={`Avatar de ${user.login}`}
-                    className={styles.avatar}
-                />
-
                 <div className={styles.info}>
-                    <p className={styles.login}>{user.login}</p>
-
-                    <span className={styles.type}>{user.type}</span>
+                    <button className={styles.type}>View Profile</button>
                 </div>
             </a>
         </div>

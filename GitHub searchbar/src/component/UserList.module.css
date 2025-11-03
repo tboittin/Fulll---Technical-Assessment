@@ -6,8 +6,12 @@
 
 .list {
     display: flex;
-    flex-direction: column;
-    gap: 10px; /* Espace entre les cartes */
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 25px ;
+    height: 55vh; /* TODO */
+    overflow-y: scroll;
 }
 
 /* -------------------- Messages d'État -------------------- */
