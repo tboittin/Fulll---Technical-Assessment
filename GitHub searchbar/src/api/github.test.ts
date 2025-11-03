@@ -51,7 +51,7 @@ describe('searchUsers', () => {
 
     it("should throw an Rate Limit error when status code is 403", async () => {
 
-        const mockResetTime = (50).toString();
+        const mockResetTime = (new Date().getTime() / 1000 + 50 + 1).toString();
 
         mockFetch.mockResolvedValueOnce({
             ok: false,
