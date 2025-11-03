@@ -35,76 +35,77 @@ export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelect
         setSelectedUsers(new Set());
     };
 
-    if (error) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.errorMessage}>
-                    <p>⚠️ Erreur lors de la recherche GitHub :</p>
-                    <p>{error}</p>
-                    <p className={styles.suggestion}>Vérifiez votre connexion ou l'état du service GitHub.</p>
-                </div>
-            </div>
-        );
-    }
-
-
-    if (loading) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.loadingMessage}>
-                    <p>Recherche en cours pour "{searchTerm}"...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (users.length === 0 && searchTerm.length >= 3) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.noResultsMessage}>
-                    <p>Aucun utilisateur trouvé pour "{searchTerm}".</p>
-                    <p className={styles.suggestion}>Essayez un autre terme de recherche.</p>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className={styles.container}>
             <div className={styles.resultsHeader}>
-                <p>
-                    {selectedUsers.size > 0 && (
-                        <span className={styles.selectionCount}>
-                            {selectedUsers.size} element{selectedUsers.size > 1 ? 's' : ''} selected
-                        </span>
-                    )}
-                    {selectedUsers.size === users.length ?
-                        <button onClick={() => handleSelectNone()} className={styles.clearButton}>
-                            Select None
-                        </button>
-                        :
-                        <button onClick={() => handleSelectAll()} className={styles.clearButton}>
-                            Select All
-                        </button>
-                    }
-                    <button onClick={() => handleDeleteSelection()} className={styles.clearButton}>
-                        Delete
+                {selectedUsers.size > 0 && (
+                    <span className={styles.selectionCount}>
+                        {selectedUsers.size} element{selectedUsers.size > 1 ? 's' : ''} selected
+                    </span>
+                )}
+                {selectedUsers.size === users.length ?
+                    <button onClick={() => handleSelectNone()} className={styles.clearButton}>
+                        Select None
                     </button>
-                    <button onClick={() => handleDuplicateSelection()} className={styles.clearButton}>
-                        Duplicate
+                    :
+                    <button onClick={() => handleSelectAll()} className={styles.clearButton}>
+                        Select All
                     </button>
-                </p>
+                }
+                <button onClick={() => handleDeleteSelection()} className={styles.clearButton}>
+                    Delete
+                </button>
+                <button onClick={() => handleDuplicateSelection()} className={styles.clearButton}>
+                    Duplicate
+                </button>
             </div>
 
             <div className={styles.list}>
-                {users.map(user => (
-                    <UserCard
-                        key={user.appId}
-                        user={user}
-                        isSelected={selectedUsers.has(user.appId)}
-                        onSelect={handleSelect}
-                    />
-                ))}
+                {
+                    loading &&
+                    !error &&
+                    users.length === 0 && (
+                        <div className={styles.container}>
+                            <div className={styles.loadingMessage}>
+                                <p>Searching for "{searchTerm}"...</p>
+                            </div>
+                        </div>
+                    )}
+
+                {
+                    !loading &&
+                    !error &&
+                    users.length === 0 &&
+                    searchTerm.length > 0 && (
+                        <div className={styles.container}>
+                            <div className={styles.noResultsMessage}>
+                                <p>No user match for "{searchTerm}".</p>
+                            </div>
+                        </div>
+                    )}
+
+                {
+                    !loading &&
+                    error && (
+                        <div className={styles.container}>
+                            <div className={styles.errorMessage}>
+                                <p>{error}</p>
+                            </div>
+                        </div>
+                    )}
+
+                {
+                    !loading &&
+                    !error &&
+                    users.length > 0 &&
+                    users.map(user => (
+                        <UserCard
+                            key={user.appId}
+                            user={user}
+                            isSelected={selectedUsers.has(user.appId)}
+                            onSelect={handleSelect}
+                        />
+                    ))}
             </div>
         </div>
     );
