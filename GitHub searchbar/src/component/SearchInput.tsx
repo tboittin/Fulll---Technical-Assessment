@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import style from "./SearchInput.module.css";
 
 interface SearchInputProps {
@@ -13,7 +13,16 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     isLoading
 }) => {
     const [isFocused, setIsFocused] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const prevIsLoadingRef = useRef(isLoading);
 
+    useEffect(() => {
+      if (prevIsLoadingRef.current && !isLoading) {
+        inputRef.current?.focus();
+      }
+      prevIsLoadingRef.current = isLoading;
+    }, [isLoading]);
+    
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
     };
@@ -29,8 +38,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         onBlur={() => setIsFocused(false)}
         className="search-input"
         disabled={isLoading}
+        ref={inputRef}
       />
-      {isLoading && <span className="loading-indicator">Loading...</span>}
+      {/* {isLoading && <span className="loading-indicator">Loading...</span>} */}
     </div>
     );
 };
