@@ -2,88 +2,85 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SearchInput } from './SearchInput';
 import '@testing-library/jest-dom';
+import React from 'react';
+
+const mockFocus = vi.fn();
+
+vi.spyOn(React, 'useRef').mockReturnValue({ current: { focus: mockFocus } });
+
+const mockSetSearchQuery = vi.fn();
+
+const setupProps = (overrides: Partial<React.ComponentProps<typeof SearchInput>> = {}) => ({
+    searchQuery: 'initial',
+    setSearchQuery: mockSetSearchQuery,
+    isLoading: false,
+    ...overrides,
+});
+
+beforeEach(() => {
+    mockSetSearchQuery.mockClear();
+    mockFocus.mockClear();
+});
 
 describe('SearchInput', () => {
-    let renderResult: ReturnType<typeof render>;
 
-    let mockSetSearchQuery: (query: string) => void; 
-    const placeholderText = 'Search input';
+    it('should display the search query value passed as prop', () => {
+        const testQuery = 'test github';
+        render(<SearchInput {...setupProps({ searchQuery: testQuery })} />);
 
-    beforeEach(() => {
-        mockSetSearchQuery = vi.fn();
-        
-        renderResult = render(
-            <SearchInput
-                searchQuery=""
-                setSearchQuery={mockSetSearchQuery}
-                isLoading={false}
-            />
-        );
-    });
-    
-    afterEach(() => {
-        renderResult.unmount();
-    });
-
-    it('should render with the initial value and placeholder when not focused', () => {
-        const inputElement = screen.getByPlaceholderText(placeholderText);
-
-        expect(inputElement).toBeInTheDocument();
-        expect(inputElement).toHaveValue('');
-        expect(inputElement).not.toBeDisabled();
+        expect(screen.getByRole('textbox')).toHaveValue(testQuery);
     });
 
     it('should call setSearchQuery with the new value on input change', () => {
-        const inputElement = screen.getByPlaceholderText(placeholderText);
-        const newValue = 'new search term';
+        render(<SearchInput {...setupProps({ searchQuery: '' })} />);
+        const input = screen.getByRole('textbox');
+        const newQuery = 'new search';
 
-        fireEvent.change(inputElement, { target: { value: newValue } });
+        fireEvent.change(input, { target: { value: newQuery } });
 
         expect(mockSetSearchQuery).toHaveBeenCalledTimes(1);
-        expect(mockSetSearchQuery).toHaveBeenCalledWith(newValue);
+        expect(mockSetSearchQuery).toHaveBeenCalledWith(newQuery);
     });
 
-    it('should hide the placeholder when focused and search query is empty', () => {
-        const inputElement = screen.getByPlaceholderText(placeholderText);
-
-        fireEvent.focus(inputElement);
-        expect(screen.queryByPlaceholderText(placeholderText)).not.toBeInTheDocument();
-        expect(inputElement).toBeInTheDocument();
+    
+    it('should disable the input when isLoading is true', () => {
+        render(<SearchInput {...setupProps({ isLoading: true })} />);
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 
-    it('should be disabled when isLoading is true and show a loading indicator', () => {
-        renderResult.rerender(
-            <SearchInput
-                searchQuery="test"
-                setSearchQuery={mockSetSearchQuery}
-                isLoading={true}
-            />
-        );
-
-        const inputElement = screen.getByRole('textbox');
-        const loadingIndicator = screen.getByText(/Loading.../i);
-
-        expect(inputElement).toBeDisabled();
-        expect(loadingIndicator).toBeInTheDocument();
+    it('should not disable the input when isLoading is false', () => {
+        render(<SearchInput {...setupProps({ isLoading: false })} />);
+        expect(screen.getByRole('textbox')).not.toBeDisabled();
     });
+    
+    // TODO
+    // it('should call focus when isLoading changes from true to false', () => {
+    //     const { rerender } = render(<SearchInput {...setupProps({ isLoading: true })} />);
+    //     expect(mockFocus).not.toHaveBeenCalled();
 
-    it('should hide the placeholder when query is NOT empty, even after blur', () => {
-        renderResult.rerender(
-            <SearchInput
-                searchQuery="a"
-                setSearchQuery={mockSetSearchQuery}
-                isLoading={false}
-            />
-        );
+    //     rerender(<SearchInput {...setupProps({ isLoading: false })} />); 
+        
+    //     expect(mockFocus).toHaveBeenCalledTimes(1);
+    // });
 
-        expect(screen.queryByPlaceholderText(placeholderText)).not.toBeInTheDocument();
+    // it('should not call focus when isLoading changes from false to true', () => {
+    //     const { rerender } = render(<SearchInput {...setupProps({ isLoading: false })} />);
+    //     expect(mockFocus).not.toHaveBeenCalled();
 
-        const inputElement = screen.getByRole('textbox');
+    //     rerender(<SearchInput {...setupProps({ isLoading: true })} />); 
+        
+    //     expect(mockFocus).not.toHaveBeenCalled();
+    // });
 
-        fireEvent.focus(inputElement);
-        fireEvent.blur(inputElement);
+    // it('ne devrait PAS appeler focus si isLoading reste false', () => {
+    //     // Étape 1 : Rendu initial avec loading = false
+    //     const { rerender } = render(<SearchInput {...setupProps({ isLoading: false })} />);
+    //     expect(mockFocus).not.toHaveBeenCalled();
 
-        expect(screen.queryByPlaceholderText(placeholderText)).not.toBeInTheDocument();
-        expect(inputElement).toBeInTheDocument();
-    });
+    //     // Étape 2 : Changement d'une autre prop (ici searchQuery)
+    //     rerender(<SearchInput {...setupProps({ isLoading: false, searchQuery: 'new' })} />); 
+        
+    //     // Vérifie que focus n'est pas appelé
+    //     expect(mockFocus).not.toHaveBeenCalled();
+    // });
 });

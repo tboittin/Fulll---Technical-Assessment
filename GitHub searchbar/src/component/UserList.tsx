@@ -35,6 +35,47 @@ export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelect
         setSelectedUsers(new Set());
     };
 
+    const handleListDisplay = () => {
+        if (loading) {
+            return (
+                <div className={styles.loadingMessage}>
+                    <p>Searching for "{searchTerm}"...</p>
+                </div>
+            )
+        }
+
+        if (error) {
+            return (
+                <div className={styles.errorMessage}>
+                    <p>{error}</p>
+                </div>
+            )
+        }
+
+        if (users.length === 0 && searchTerm.length > 0) {
+            return (
+                <div className={styles.noResultsMessage}>
+                    <p>No user match for "{searchTerm}".</p>
+                </div>
+            )
+        }
+
+        if (users.length > 0) {
+            return (
+                <div className={styles.list}>
+                    {users.map(user => (
+                        <UserCard
+                            key={user.appId}
+                            user={user}
+                            isSelected={selectedUsers.has(user.appId)}
+                            onSelect={handleSelect}
+                        />
+                    ))}
+                </div>
+            )
+        }
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.resultsHeader}>
@@ -60,53 +101,9 @@ export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelect
                 </button>
             </div>
 
-            <div className={styles.list}>
-                {
-                    loading &&
-                    !error &&
-                    users.length === 0 && (
-                        <div className={styles.container}>
-                            <div className={styles.loadingMessage}>
-                                <p>Searching for "{searchTerm}"...</p>
-                            </div>
-                        </div>
-                    )}
-
-                {
-                    !loading &&
-                    !error &&
-                    users.length === 0 &&
-                    searchTerm.length > 0 && (
-                        <div className={styles.container}>
-                            <div className={styles.noResultsMessage}>
-                                <p>No user match for "{searchTerm}".</p>
-                            </div>
-                        </div>
-                    )}
-
-                {
-                    !loading &&
-                    error && (
-                        <div className={styles.container}>
-                            <div className={styles.errorMessage}>
-                                <p>{error}</p>
-                            </div>
-                        </div>
-                    )}
-
-                {
-                    !loading &&
-                    !error &&
-                    users.length > 0 &&
-                    users.map(user => (
-                        <UserCard
-                            key={user.appId}
-                            user={user}
-                            isSelected={selectedUsers.has(user.appId)}
-                            onSelect={handleSelect}
-                        />
-                    ))}
+            <div className={styles.container}>
+                {handleListDisplay()}
             </div>
-        </div>
+        </div >
     );
 }
