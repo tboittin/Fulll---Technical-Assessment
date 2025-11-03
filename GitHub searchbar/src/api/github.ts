@@ -21,7 +21,6 @@ export const searchUsers = async (query: string): Promise<GithubSearchResponse> 
         if (response.status === 403) {
             const rateLimitReset = response.headers.get('X-RateLimit-Reset');
             const resetTime = rateLimitReset ? rateLimitReset : 'inconnu';
-            // const resetTime = rateLimitReset ? new Date(parseInt(rateLimitReset, 10) * 1000).toLocaleTimeString() : 'inconnu';
 
             throw new Error(
                 "Rate limit exceeded." + 

@@ -1,0 +1,75 @@
+.card {
+    background-color: lightgray;
+    width: 100px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    margin: 25px 25px;
+}
+
+
+/* Effet de survol (hover) */
+.card:hover {
+    border-color: #0366d6; /* Bordure de focus */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* État sélectionné (US-2.1) */
+.selected {
+    border-color: #0366d6; /* Bordure primaire de GitHub */
+    background-color: #e9f0ff; /* Arrière-plan légèrement bleu */
+    box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.2);
+}
+
+/* -------------------- Checkbox (US-2.1) -------------------- */
+.checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    min-width: 20px; 
+    accent-color: #0366d6; /* Couleur d'accentuation */
+}
+
+/* -------------------- Lien Conteneur (pour Avatar et Info) -------------------- */
+.linkContainer {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    flex-grow: 1;
+}
+
+/* -------------------- Avatar -------------------- */
+.avatar {
+    width: 60px; /* Taille légèrement plus grande */
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid #ffffff; /* Petit contour blanc */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* -------------------- Informations -------------------- */
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login {
+    font-weight: 700; /* Plus audacieux */
+    font-size: 1.25em; /* Plus grand */
+    color: #24292e; /* Couleur de texte sombre */
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.type {
+    font-size: 0.9em;
+    color: #586069; /* Gris moyen */
+    text-transform: capitalize;
+    display: inline-block;
+    margin-top: 4px;
+}

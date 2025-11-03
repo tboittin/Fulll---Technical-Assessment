@@ -28,7 +28,6 @@ const mockSuccessResponse: GithubSearchResponse = {
 };
 
 vi.mock("../api/github", () => ({
-    // searchUsers renvoie directement la promesse de succès fixe
     searchUsers: () => Promise.resolve(mockSuccessResponse),
 }));
 
