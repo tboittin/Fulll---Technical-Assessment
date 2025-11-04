@@ -1,6 +1,7 @@
 import type { UserCardData } from "../utils/types";
 import styles from "./UserList.module.css";
 import { UserCard } from "./UserCard";
+import { useState } from "react";
 
 interface UserListProps {
     users: UserCardData[];
@@ -14,6 +15,7 @@ interface UserListProps {
 }
 
 export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelection, handleDuplicateSelection, setSelectedUsers, selectedUsers }: UserListProps) => {
+    const [editMode, setEditMode] = useState(false);
 
     const handleSelect = (appId: string) => {
         setSelectedUsers(prevSelected => {
@@ -69,6 +71,7 @@ export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelect
                             user={user}
                             isSelected={selectedUsers.has(user.appId)}
                             onSelect={handleSelect}
+                            editMode={editMode}
                         />
                     ))}
                 </div>
@@ -78,29 +81,38 @@ export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelect
 
     return (
         <div className={styles.container}>
-            <div className={styles.resultsHeader}>
-                {selectedUsers.size > 0 && (
-                    <span className={styles.selectionCount}>
-                        {selectedUsers.size} element{selectedUsers.size > 1 ? 's' : ''} selected
-                    </span>
-                )}
-                {selectedUsers.size === users.length ?
-                    <button onClick={() => handleSelectNone()} className={styles.clearButton}>
-                        Select None
-                    </button>
-                    :
-                    <button onClick={() => handleSelectAll()} className={styles.clearButton}>
-                        Select All
-                    </button>
-                }
-                <button onClick={() => handleDeleteSelection()} className={styles.clearButton}>
-                    Delete
-                </button>
-                <button onClick={() => handleDuplicateSelection()} className={styles.clearButton}>
-                    Duplicate
+            <div className={styles.editModeHeader}>
+                <button onClick={() => setEditMode(!editMode)} className={styles.editButton}>
+                    {editMode ? 'Edit mode on' : 'Edit mode off'}
                 </button>
             </div>
+            {
+                editMode && (
+                    <div className={styles.resultsHeader}>
+                        {selectedUsers.size === users.length ?
+                            <button onClick={() => handleSelectNone()} className={styles.clearButton}>
+                                Select None
+                            </button>
+                            :
+                            <button onClick={() => handleSelectAll()} className={styles.clearButton}>
+                                Select All
+                            </button>
+                        }
+                        {selectedUsers.size > 0 && (
+                            <span className={styles.selectionCount}>
+                                {selectedUsers.size} element{selectedUsers.size > 1 ? 's' : ''} selected
+                            </span>
+                        )}
 
+                        <button onClick={() => handleDeleteSelection()} className={styles.clearButton}>
+                            Delete
+                        </button>
+                        <button onClick={() => handleDuplicateSelection()} className={styles.clearButton}>
+                            Duplicate
+                        </button>
+                    </div>
+                )
+            }
             <div className={styles.container}>
                 {handleListDisplay()}
             </div>

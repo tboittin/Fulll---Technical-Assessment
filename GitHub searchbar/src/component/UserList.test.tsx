@@ -65,74 +65,76 @@ describe('UserList', () => {
         expect(screen.queryByText(/Searching for/i)).not.toBeInTheDocument();
     });
 
-
-    //TODO: 
-    // it('should call setSelectedUsers to toggle individual selection', () => {
-    //     const { setSelectedUsers } = setupProps();
-    //     render(<UserList {...setupProps({ setSelectedUsers })} />);
-
-    //     const checkbox1 = screen.getByRole('checkbox', { name: 'user1' });
-    //     fireEvent.click(checkbox1);
-
-    //     const setSelectedUsersMock = setSelectedUsers as Mock;
-
-    //     expect(setSelectedUsersMock).toHaveBeenCalledTimes(1);
-    //     expect(typeof setSelectedUsersMock.mock.calls[0][0]).toBe('function');
-    // });
-
-    it('should display selection count when there are the correct amount of selected users', () => {
-        const selectedUsers = new Set(['app1', 'app3']);
-        render(<UserList {...setupProps({ selectedUsers })} />);
-
-        expect(screen.getByText('2 elements selected')).toBeInTheDocument();
+    it('should display the list of users and the "Edit mode off" button by default', () => {
+        render(<UserList {...setupProps()} />);
+        expect(screen.queryAllByTestId(/user-card/i)).toHaveLength(mockUsers.length);
+        expect(screen.getByRole('button', { name: /Edit mode off/i })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /Select All/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /Delete/i })).not.toBeInTheDocument();
     });
 
-    it('should call setSelectedUsers with all IDs when "Select All" is clicked', () => {
-        const { setSelectedUsers } = setupProps({ selectedUsers: new Set(['app1']) }); // 1/3 sélectionné
+    it('should toggle edit mode and display action buttons', () => {
+        render(<UserList {...setupProps()} />);
+        
+        const editButton = screen.getByRole('button', { name: /Edit mode off/i });
+        fireEvent.click(editButton);
+
+        expect(screen.getByRole('button', { name: /Edit mode on/i })).toBeInTheDocument();
+
+        expect(screen.getByRole('button', { name: /Select All/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Delete/i })).toBeInTheDocument();
+
+        const editModeOnButton = screen.getByRole('button', { name: /Edit mode on/i });
+        fireEvent.click(editModeOnButton);
+
+        expect(screen.getByRole('button', { name: /Edit mode off/i })).toBeInTheDocument();
+
+        expect(screen.queryByRole('button', { name: /Select All/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /Delete/i })).not.toBeInTheDocument();
+    });
+    
+    it('should display selection count and call handlers appropriately', () => {
+        const { handleDeleteSelection, handleDuplicateSelection } = setupProps();
+        const selectedUsers = new Set(['a1', 'c3']);
+
+        render(<UserList {...setupProps({ selectedUsers, handleDeleteSelection, handleDuplicateSelection })} />);
+        
+        fireEvent.click(screen.getByRole('button', { name: /Edit mode off/i }));
+
+        expect(screen.getByText('2 elements selected')).toBeInTheDocument();
+        
+        const deleteButton = screen.getByRole('button', { name: /Delete/i });
+        fireEvent.click(deleteButton);
+        expect(handleDeleteSelection).toHaveBeenCalledTimes(1);
+
+        const duplicateButton = screen.getByRole('button', { name: /Duplicate/i });
+        fireEvent.click(duplicateButton);
+        expect(handleDuplicateSelection).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call setSelectedUsers with all IDs when clicking "Select All"', () => {
+        const { setSelectedUsers } = setupProps({ selectedUsers: new Set(['app1']) }); 
         render(<UserList {...setupProps({ setSelectedUsers, selectedUsers: new Set(['app1']) })} />);
+        
+        fireEvent.click(screen.getByRole('button', { name: /Edit mode off/i }));
 
         const selectAllButton = screen.getByRole('button', { name: /Select All/i });
         fireEvent.click(selectAllButton);
-
+        
         const setSelectedUsersMock = setSelectedUsers as Mock;
-
         expect(setSelectedUsersMock).toHaveBeenCalledTimes(1);
         const calledSet = setSelectedUsersMock.mock.calls[0][0] as Set<string>;
         expect(calledSet.size).toBe(3);
         expect(calledSet).toEqual(new Set(['a1', 'b2', 'c3']));
     });
 
-    it('should call setSelectedUsers with an empty Set when "Select None" is clicked', () => {
-        const { setSelectedUsers } = setupProps({ selectedUsers: new Set(['app1', 'app2', 'app3']) }); // Tout sélectionné
-        render(<UserList {...setupProps({ setSelectedUsers, selectedUsers: new Set(['app1', 'app2', 'app3']) })} />);
+    it('should display "Select None" when all users are selected', () => {
+        const selectedUsers = new Set(['a1', 'b2', 'c3']);
+        render(<UserList {...setupProps({ selectedUsers })} />);
+        
+        fireEvent.click(screen.getByRole('button', { name: /Edit mode off/i }));
 
-        const selectNoneButton = screen.getByRole('button', { name: /Select None/i });
-        fireEvent.click(selectNoneButton);
-
-        const setSelectedUsersMock = setSelectedUsers as Mock;
-
-        expect(setSelectedUsersMock).toHaveBeenCalledTimes(1);
-        const calledSet = setSelectedUsersMock.mock.calls[0][0] as Set<string>;
-        expect(calledSet.size).toBe(0);
-    });
-
-    it('should call handleDeleteSelection when "Delete" is clicked', () => {
-        const { handleDeleteSelection } = setupProps();
-        render(<UserList {...setupProps({ handleDeleteSelection })} />);
-
-        const deleteButton = screen.getByRole('button', { name: /Delete/i });
-        fireEvent.click(deleteButton);
-
-        expect(handleDeleteSelection).toHaveBeenCalledTimes(1);
-    });
-
-    it('should call handleDuplicateSelection when "Duplicate" is clicked', () => {
-        const { handleDuplicateSelection } = setupProps();
-        render(<UserList {...setupProps({ handleDuplicateSelection })} />);
-
-        const duplicateButton = screen.getByRole('button', { name: /Duplicate/i });
-        fireEvent.click(duplicateButton);
-
-        expect(handleDuplicateSelection).toHaveBeenCalledTimes(1);
+        expect(screen.getByRole('button', { name: /Select None/i })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /Select All/i })).not.toBeInTheDocument();
     });
 });

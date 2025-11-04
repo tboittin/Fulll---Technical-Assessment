@@ -5,9 +5,10 @@ interface UserCardProps {
     user: UserCardData,
     isSelected: boolean,
     onSelect: (appId: string) => void,
+    editMode: boolean
 }
 
-export const UserCard = ({ user, isSelected, onSelect }: UserCardProps) => {
+export const UserCard = ({ user, isSelected, onSelect, editMode }: UserCardProps) => {
 
     const handleSelect = () => {
         onSelect(user.appId);
@@ -17,14 +18,15 @@ export const UserCard = ({ user, isSelected, onSelect }: UserCardProps) => {
 
     return (
         <div className={cardSelectedClass}>
-            <input
-                type="checkbox"
-                checked={isSelected}
-                onChange={handleSelect}
-                className={styles.checkbox}
-                aria-label={`Sélectionner l'utilisateur ${user.login}`}
-            />
-
+            {editMode && (
+                <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={handleSelect}
+                    className={styles.checkbox}
+                    aria-label={`Sélectionner l'utilisateur ${user.login}`}
+                />
+            )}
             <img
                 src={user.avatar_url}
                 alt={`Avatar de ${user.login}`}
