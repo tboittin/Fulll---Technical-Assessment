@@ -16,6 +16,8 @@ export const UserCard = ({ user, isSelected, onSelect, editMode }: UserCardProps
 
     const cardSelectedClass = `${styles.card} ${isSelected ? styles.selected : ''}`;
 
+    const cropLogin = (login: string) => login.length > 10 ? `${login.slice(0, 10)}...` : login;
+    
     return (
         <div className={cardSelectedClass}>
             {editMode && (
@@ -34,7 +36,7 @@ export const UserCard = ({ user, isSelected, onSelect, editMode }: UserCardProps
             />
             <div className={styles.identification}>
                 <p>{user.id}</p>
-                <p>{user.login}</p>
+                <p>{cropLogin(user.login)}</p>
             </div>
             <a
                 href={user.html_url}
