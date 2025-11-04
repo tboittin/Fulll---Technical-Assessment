@@ -44,6 +44,7 @@ function App() {
 
   useEffect(() => {
     setUsersList(users);
+    setSelectedUsers(new Set());
   }, [users]);
 
   return (
