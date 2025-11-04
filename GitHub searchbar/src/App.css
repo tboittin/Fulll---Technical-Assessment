@@ -1,6 +1,3 @@
-* {
-  transition: all 0.5s ease-in-out;
-}
 
 :root {
   font-family: sans-serif;
@@ -8,8 +5,12 @@
   overflow: hidden;
 }
 
-header {
+header, .searchContainer {
   height: 64px;
+  flex-shrink: 0;
+}
+
+header {
   background-color: gray;
   display: flex;
   justify-content: center;
@@ -21,15 +22,3 @@ header h1 {
   margin: auto;
 }
 
-.edit-section {
-  background-color: green;
-  margin: 15px auto;
-  padding: 20px;
-}
-
-.user-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  border: 2px solid black;
-}

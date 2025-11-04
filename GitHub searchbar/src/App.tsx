@@ -53,7 +53,7 @@ function App() {
         <h1>Github Search</h1>
       </header>
 
-      <div className="search-container">
+      <div className="searchContainer">
         <SearchInput
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
