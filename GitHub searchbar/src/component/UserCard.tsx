@@ -32,17 +32,17 @@ export const UserCard = ({ user, isSelected, onSelect, editMode }: UserCardProps
                 alt={`Avatar de ${user.login}`}
                 className={styles.avatar}
             />
-            <p className={styles.id}>{user.id}</p>
-            <p className={styles.login}>{user.login}</p>
+            <div className={styles.identification}>
+                <p>{user.id}</p>
+                <p>{user.login}</p>
+            </div>
             <a
                 href={user.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.linkContainer}
             >
-                <div className={styles.info}>
-                    <button className={styles.type}>View Profile</button>
-                </div>
+                <button className={styles.link}>View Profile</button>
             </a>
         </div>
     );
