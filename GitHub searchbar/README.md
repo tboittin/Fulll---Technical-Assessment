@@ -4,6 +4,8 @@ This project is a front-end web application built with React and TypeScript that
 
 This project emphasizes modern React state management (Hooks), testing best practices (Vitest, Testing Library), and asynchronous state handling (debouncing, API error management).
 
+Visit an online version of this project [here](https://fulll-technical-assessment.vercel.app/).
+
 ![GitHub User Search](./src/assets/Screenshot.png)
 
 ---
