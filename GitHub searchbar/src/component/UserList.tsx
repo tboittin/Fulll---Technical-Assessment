@@ -158,13 +158,19 @@ export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelect
                             )}
                         </div>
                         <div className={styles.actionButtons}>
-                            <button onClick={() => handleDuplicateSelection()} className={styles.clearButton}>
+                            <button 
+                            onClick={() => handleDuplicateSelection()}
+                            className={styles.clearButton}
+                                disabled={selectedUsers.size === 0}
+                            aria-label="Duplicate selected users"
+                            >
                                 <img src={duplicateIcon} className={styles.icon} alt="Duplicate" />
                             </button>
                             <button
                                 onClick={() => handleDeleteSelection()}
                                 className={styles.clearButton}
                                 disabled={selectedUsers.size === 0}
+                                aria-label="Delete selected users"
                             >
                                 <img src={deleteIcon} className={styles.icon} alt="Delete" />
                             </button>
