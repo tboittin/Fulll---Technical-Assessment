@@ -8,6 +8,16 @@ import type { UserCardData } from './utils/types';
 
 import './App.css';
 
+/**
+ * @description
+ * Main component for the GitHub Search application.
+ * 
+ * It orchestrates the search query state, data fetching via the `useGithubSearch` hook,
+ * and the management of the displayed user list (including selection, deletion,
+ * and duplication).
+ *
+ * @returns {JSX.Element} The root component of the application.
+ */
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const { users, loading, error } = useGithubSearch(searchQuery);

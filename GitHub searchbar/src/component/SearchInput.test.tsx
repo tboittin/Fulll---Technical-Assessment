@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SearchInput } from './SearchInput';
 import '@testing-library/jest-dom';
 import React from 'react';
@@ -52,35 +52,5 @@ describe('SearchInput', () => {
         render(<SearchInput {...setupProps({ isLoading: false })} />);
         expect(screen.getByRole('textbox')).not.toBeDisabled();
     });
-    
-    // TODO
-    // it('should call focus when isLoading changes from true to false', () => {
-    //     const { rerender } = render(<SearchInput {...setupProps({ isLoading: true })} />);
-    //     expect(mockFocus).not.toHaveBeenCalled();
 
-    //     rerender(<SearchInput {...setupProps({ isLoading: false })} />); 
-        
-    //     expect(mockFocus).toHaveBeenCalledTimes(1);
-    // });
-
-    // it('should not call focus when isLoading changes from false to true', () => {
-    //     const { rerender } = render(<SearchInput {...setupProps({ isLoading: false })} />);
-    //     expect(mockFocus).not.toHaveBeenCalled();
-
-    //     rerender(<SearchInput {...setupProps({ isLoading: true })} />); 
-        
-    //     expect(mockFocus).not.toHaveBeenCalled();
-    // });
-
-    // it('ne devrait PAS appeler focus si isLoading reste false', () => {
-    //     // Étape 1 : Rendu initial avec loading = false
-    //     const { rerender } = render(<SearchInput {...setupProps({ isLoading: false })} />);
-    //     expect(mockFocus).not.toHaveBeenCalled();
-
-    //     // Étape 2 : Changement d'une autre prop (ici searchQuery)
-    //     rerender(<SearchInput {...setupProps({ isLoading: false, searchQuery: 'new' })} />); 
-        
-    //     // Vérifie que focus n'est pas appelé
-    //     expect(mockFocus).not.toHaveBeenCalled();
-    // });
 });

@@ -12,6 +12,27 @@ const mapUsersToCardData = (users: GithubUser[]): UserCardData[] => {
     }));
 };
 
+/**
+ * @description
+ * Custom hook to manage searching the GitHub user API.
+ * 
+ * This hook encapsulates the following logic:
+ * - Debounces the search term to prevent excessive API calls.
+ * - Manages the state for `users`, `loading`, and `error`.
+ * - Fetches data from the `searchUsers` API.
+ * - Maps the API response to the `UserCardData` format.
+ * - Handles request cleanup (cancellation) to prevent race conditions
+ *   if the search term changes before a request completes.
+ *
+ * @param {string} searchTerm The search query string, typically from an input field.
+ *
+ * @returns {{
+ *   users: UserCardData[],
+ *   loading: boolean,
+ *   error: string | null
+ * }}
+ * An object containing the search results, loading state, and error state.
+ */
 export const useGithubSearch = (searchTerm: string) => {
     const [users, setUsers] = useState<UserCardData[]>([]);
     const [loading, setLoading] = useState(false);

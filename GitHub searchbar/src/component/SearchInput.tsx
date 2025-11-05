@@ -7,6 +7,22 @@ interface SearchInputProps {
     isLoading: boolean;
 }
 
+/**
+ * @description
+ * A controlled input component for handling search queries.
+ * 
+ * This component manages its own focus state to provide a conditional placeholder
+ * (placeholder only visible when empty and not focused).
+ * It automatically re-focuses the input
+ * field when a search operation (`isLoading`) completes, preventing the user
+ * from having to click back into the input.
+ *
+ * @param {SearchInputProps} props The component props.
+ * @param {string} props.searchQuery The current value of the search query (controlled).
+ * @param {(query: string) => void} props.setSearchQuery Callback function to update the search query state.
+ * @param {boolean} props.isLoading Boolean indicating if a search operation is currently in progress.
+ * @returns {JSX.Element} A search input field.
+ */
 export const SearchInput: React.FC<SearchInputProps> = ({
     searchQuery,
     setSearchQuery,
@@ -40,7 +56,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         disabled={isLoading}
         ref={inputRef}
       />
-      {/* {isLoading && <span className="loading-indicator">Loading...</span>} */}
     </div>
     );
 };

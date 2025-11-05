@@ -16,6 +16,29 @@ interface UserListProps {
     selectedUsers: Set<string>;
 }
 
+/**
+ * @description
+ * Renders the main list of users and manages the UI state for interactions.
+ * 
+ * This component is responsible for:
+ * - Displaying the user list (`UserCard` components).
+ * - Showing loading, error, or "no results" messages.
+ * - Managing an internal "edit mode" to show/hide selection and action tools.
+ * - Handling single-user selection logic.
+ * - Implementing a three-state "Select All" checkbox (empty, checked, indeterminate).
+ * - Displaying and forwarding actions (Delete, Duplicate) to the parent.
+ *
+ * @param {UserListProps} props The component props.
+ * @param {UserCardData[]} props.users The array of user data to display.
+ * @param {boolean} props.loading True if a search is in progress.
+ * @param {string | null} props.error An error message, if any.
+ * @param {string} props.searchTerm The current search term (used for display messages).
+ * @param {() => void} props.handleDeleteSelection Callback to delete selected users.
+ * @param {() => void} props.handleDuplicateSelection Callback to duplicate selected users.
+ * @param {React.Dispatch<React.SetStateAction<Set<string>>>} props.setSelectedUsers The state setter for the selected users Set.
+ * @param {Set<string>} props.selectedUsers The Set of selected user `appId`s.
+ * @returns {JSX.Element} The UserList component.
+ */
 export const UserList = ({ users, loading, error, searchTerm, handleDeleteSelection, handleDuplicateSelection, setSelectedUsers, selectedUsers }: UserListProps) => {
     const [editMode, setEditMode] = useState(false);
 

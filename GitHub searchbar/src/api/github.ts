@@ -3,6 +3,22 @@ import type { GithubSearchResponse } from "../utils/types";
 // documentation: https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28&versionId=free-pro-team%40latest&restPage=scripting-with-the-rest-api-and-javascript#search-users
 const GITHUB_SEARCH_USERS_URL = "https://api.github.com/search/users";
 
+/**
+ * @description
+ * Fetches a list of users from the GitHub API based on a search query.
+ * 
+ * This function handles the API request, encodes the query, and manages
+ * specific HTTP error cases, such as rate limiting (403) and other
+ * server errors.
+ *
+ * @param {string} query The search term to query the GitHub API with.
+ * @returns {Promise<GithubSearchResponse>} A promise that resolves to the raw 
+ *          search response from the GitHub API.
+ * @throws {Error} Throws an error if the API rate limit is exceeded (403), 
+ *                 detailing the reset time if available.
+ * @throws {Error} Throws a generic error for other non-ok HTTP responses 
+ *                 (e.g., 500, 404).
+ */
 export const searchUsers = async (query: string): Promise<GithubSearchResponse> => {
 
     if (!query) {
