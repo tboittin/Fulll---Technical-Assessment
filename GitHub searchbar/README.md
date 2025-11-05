@@ -2,7 +2,7 @@
 
 This project is a front-end web application built with React and TypeScript that allows users to search the GitHub API for users. The application provides an interface to visualize search results and interactively manipulate them (selection, duplication, deletion).
 
-This project emphasizes modern React state management (Hooks), testing best practices (Vitest, Testing Library), and asynchronous state handling (debouncing, API error management).
+This project emphasizes React state management (Hooks), testing best practices (Vitest, Testing Library), and asynchronous state handling (debouncing, API error management).
 
 Visit an online version of this project [here](https://fulll-technical-assessment.vercel.app/).
 
@@ -19,7 +19,6 @@ Visit an online version of this project [here](https://fulll-technical-assessmen
 *   **Focus Management:** The search input automatically regains focus after loading completes, providing a smoother user experience.
 *   **Layout & Styling:**
     *   Long usernames are truncated using `text-overflow: ellipsis`.
-    *   The list layout is managed to fit the window height (`100vh`) with an internal scrollbar.
 
 ### 2. Edit Mode and Selection
 *   **"Edit Mode" Toggle:** A button allows the user to toggle edit mode. Disabling this mode resets the current selection.
